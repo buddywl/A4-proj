@@ -1,9 +1,13 @@
 /* This class should implement the DisplayableMaze interface */
 public class Maze implements DisplayableMaze{
 
-    int height = getHeight();
-    int width = getWidth();
-    MazeContents mazeGrid = getContents(0,0);
+    int height;
+    int width;
+    MazeContents[][] mazeGrid = new MazeContents[height][width];
+
+    MazeLocation start;
+
+    MazeLocation finish;
 
     /** The DemoMaze method will allow you to generate a simple maze
      * To test your code on as you develop it. Ultimately, you will want
@@ -11,7 +15,7 @@ public class Maze implements DisplayableMaze{
      * * @author Tianah Gooden
      * * @version October 17th 2023
      */
-    public void initDemoMaze(){ //String fileName, 
+    public void initDemoMaze(){ //String fileName,
         this.height = 10;
         this.width = 8;
         this.mazeGrid = new MazeContents[height][width];
@@ -31,22 +35,33 @@ public class Maze implements DisplayableMaze{
   }
 
     public int getHeight() {
-        return 0;
+        return this.height;
     }
 
     public int getWidth() {
-        return 0;
+        return this.width;
     }
 
     public MazeContents getContents(int i, int j) {
-        return null;
+        return mazeGrid[i][j];
     }
 
     public MazeLocation getStart() {
-        return null;
+        return this.start;
     }
 
     public MazeLocation getFinish() {
-        return null;
+        return this.finish;
+    }
+
+    public static void main(String[] args){
+        Maze maze = new Maze();
+        maze.initDemoMaze();
+
+        System.out.println(maze.getHeight());
+        System.out.println(maze.getWidth());
+        System.out.println(maze.getStart());
+        System.out.println(maze.getFinish());
+
     }
 }
