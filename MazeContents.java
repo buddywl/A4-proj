@@ -24,4 +24,5 @@ public enum MazeContents {
     this.isExplorable = isExplorable;
     this.color = color;
   }
+
 }

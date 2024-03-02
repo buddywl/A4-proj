@@ -64,4 +64,16 @@ public class Maze implements DisplayableMaze{
         System.out.println(maze.getFinish());
 
     }
+
+    public void setPath(int i, int j){
+      mazeGrid[i][j] = MazeContents.PATH;
+    }
+
+    public void setVisited(int i, int j){
+      mazeGrid[i][j] = MazeContents.VISITED;
+    }
+
+    public void setDeadEnd(int i, int j){
+      mazeGrid[i][j] = MazeContents.DEAD_END;
+    }
 }
