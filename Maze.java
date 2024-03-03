@@ -57,19 +57,6 @@ public class Maze implements DisplayableMaze{
         return this.finish;
     }
 
-    public static void main(String[] args) throws IOException {
-
-        Maze newMaze = new Maze();
-        char[][] mazeArray = newMaze.makeMaze("C:\\Users\\buddy\\Desktop\\CSC210\\A4-Template\\maze1");
-        String maze = Arrays.deepToString(mazeArray);
-        System.out.println(maze);
-        System.out.println(mazeArray.length);
-        System.out.println(mazeArray[0].length);
-
-        newMaze.setMazeGrid(mazeArray);
-        MazeViewer viewer = new MazeViewer(newMaze);
-    }
-
     public void setPath(int i, int j){
       mazeGrid[i][j] = MazeContents.PATH;
     }
