@@ -39,7 +39,6 @@ class SolveMaze {
       maze.setPath(row, col);
 //      setCurrent(current, maze.getFinish().getRow(), maze.getFinish().getCol());
 //      maze.setPath(maze.getFinish().getRow(), maze.getFinish().getCol());
-
       return true;
     }
 
