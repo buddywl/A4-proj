@@ -6,7 +6,7 @@ class SolveMaze {
 
     /**
      * takes in user input in the command line to load a maze file
-     * demonstrates two instance of maze solving (if a command line is/isnt provided)
+     * demonstrates an instance of maze solving: if a file is provided, that maze is used as default, else, demo maze is used)
      * @param args command line arguments (ignored)
      * @throws FileNotFoundException if the file does not exist
      */
