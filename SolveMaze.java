@@ -13,17 +13,21 @@ class SolveMaze {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         System.out.print("INPUT FILE NAME: ");
+
+        File theFile = null;
 //        String filename = input.nextLine();
         String maze = "";
         
         if(args.length > 0){
             String filename = args[0];
-            File filepath = new File((args.length > 0) ? args[0] : filename);
-            maze = filepath.getAbsolutePath();
+            theFile = new File((args.length > 0) ? args[0] : filename);
+            maze = theFile.getAbsolutePath();
         } else {
-            File defaultPath = new File((args.length > 0) ? args[0] : "maze1");
-            maze = defaultPath.getAbsolutePath();
+            String filename = input.nextLine();
+            theFile = new File((args.length > 0) ? args[0] : filename);
+            maze = theFile.getAbsolutePath();
         }
+        mazeInit(maze);
 
 //        if(filename != ""){
 //            File filepath = new File((args.length > 0) ? args[0] : filename);
@@ -33,7 +37,7 @@ class SolveMaze {
 //            maze = defaultPath.getAbsolutePath();
 //        }
 
-        mazeInit(maze);
+//        mazeInit(maze);
     }
 
     /**
