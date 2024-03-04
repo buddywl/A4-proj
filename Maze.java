@@ -93,27 +93,27 @@ public class Maze implements DisplayableMaze{
         try{
             Scanner scan = new Scanner(new File(filename));
             StringBuilder sb = new StringBuilder();
-        while (scan.hasNext()) {
-            sb.append(scan.nextLine());
-            rows++;
-        }
-        cols = sb.length()/rows;
-        char[][] maze = new char[rows][cols];
-        int i = 0;
-
-        for(int row = 0; row < rows; row++){
-            for(int col = 0; col < cols; col++){
-                maze[row][col] = sb.charAt(i++);
+            while (scan.hasNext()) {
+                sb.append(scan.nextLine());
+                rows++;
             }
-        }
-        return maze;
+            cols = sb.length()/rows;
+            char[][] maze = new char[rows][cols];
+            int count = 0;
+
+            for(int row = 0; row < rows; row++){
+                for(int col = 0; col < cols; col++){
+                    maze[row][col] = sb.charAt(count++);
+                }
+            }
+            return maze;
+
         } catch (FileNotFoundException e) {
             System.err.println("Cannot locate file.");
             System.exit(-1);
-            return null;
+            throw new FileNotFoundException();
         }
     }
-
   /**
    * Converts a 2D array of chars into a displayable maze
    * @param maze: the @D array of chars
@@ -132,22 +132,19 @@ public class Maze implements DisplayableMaze{
         for(int row = 0; row < maze.length; row++){
             for(int col = 0; col < maze[0].length; col++){
                 if(maze[row][col] == wall){
-                this.mazeGrid[row][col] = MazeContents.WALL;
-
-            } else if (maze[row][col] == st){
-                this.mazeGrid[row][col] = MazeContents.OPEN;
-                this.start = new MazeLocation(row, col);
-
-            } else if (maze[row][col] == space){
-                this.mazeGrid[row][col] = MazeContents.OPEN;
-
-            } else if (maze[row][col] == fin){
-                this.mazeGrid[row][col] = MazeContents.OPEN;
-                this.finish = new MazeLocation(row, col);
+                    this.mazeGrid[row][col] = MazeContents.WALL;
+                } else if (maze[row][col] == st){
+                    this.mazeGrid[row][col] = MazeContents.OPEN;
+                    this.start = new MazeLocation(row, col);
+                } else if (maze[row][col] == space){
+                    this.mazeGrid[row][col] = MazeContents.OPEN;
+                } else if (maze[row][col] == fin){
+                    this.mazeGrid[row][col] = MazeContents.OPEN;
+                    this.finish = new MazeLocation(row, col);
+                }
 
             }
         }
-      }
 
 
     }
