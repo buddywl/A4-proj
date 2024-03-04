@@ -5,7 +5,8 @@ class SolveMaze {
     public static ArrayList<MazeLocation> visited = new ArrayList<>();
 
     /**
-     *
+     * takes in user input in the command line to load a maze file
+     * demonstrates two instance of maze solving (if a command line is/isnt provided)
      * @param args command line arguments (ignored)
      * @throws FileNotFoundException if the file does not exist
      */
@@ -15,12 +16,14 @@ class SolveMaze {
         Scanner input = new Scanner(System.in);
         System.out.print("INPUT FILE NAME: ");
         String filename = input.nextLine();
+        String maze = "";
 
-        File filepath = new File((args.length > 0) ? args[0] : filename);
-        String maze = filepath.getAbsolutePath();
+        if(filename != ""){
+            File filepath = new File((args.length > 0) ? args[0] : filename);
+            maze = filepath.getAbsolutePath();
+        }
 
         SolvedMaze.maze(maze);
-        SolvedMaze.maze();
     }
 
     /**
@@ -36,37 +39,18 @@ class SolveMaze {
         visited.clear();
         Maze maze = new Maze();
 
-        char[][] mazeArray = maze.makeMaze(filename);
-        maze.setMazeGrid(mazeArray);
+        if (filename != ""){
+            char[][] mazeArray = maze.makeMaze(filename);
+            maze.setMazeGrid(mazeArray);
+        } else {
+            maze.initDemoMaze();
+        }
 
         MazeViewer viewer = new MazeViewer(maze);
 
         MazeLocation startLocation = new MazeLocation(maze.getStart());
         int sRow = startLocation.getRow();
         int sCol = startLocation.getCol();
-
-        if(SolvedMaze.solve(maze, sRow, sCol)){
-            System.out.println("The maze was solved!");
-        } else {
-            System.out.println("No solution was found.");
-        }
-    }
-
-    /**
-     * Uses the initDemoMaze() method to initialize a demo maze, then solves it.
-     */
-    public void maze(){
-        SolveMaze SolvedMaze = new SolveMaze();
-
-        visited.clear();
-        Maze maze = new Maze();
-        maze.initDemoMaze();
-
-        MazeViewer viewer = new MazeViewer(maze);
-
-        MazeLocation start = new MazeLocation(maze.getStart());
-        int sRow = start.getRow();
-        int sCol = start.getCol();
 
         if(SolvedMaze.solve(maze, sRow, sCol)){
             System.out.println("The maze was solved!");
@@ -114,11 +98,11 @@ class SolveMaze {
         if (maze.getContents(north.getRow(), north.getCol()).equals(MazeContents.OPEN) && !solved) {
             solved = solve(maze, row - 1, col);
         }
-        if (maze.getContents(south.getRow(), south.getCol()).equals(MazeContents.OPEN) && !solved) {
-            solved = solve(maze, row + 1, col);
-        }
         if (maze.getContents(east.getRow(), east.getCol()).equals(MazeContents.OPEN) && !solved) {
             solved = solve(maze, row, col + 1);
+        }
+        if (maze.getContents(south.getRow(), south.getCol()).equals(MazeContents.OPEN) && !solved) {
+            solved = solve(maze, row + 1, col);
         }
         if (maze.getContents(west.getRow(), west.getCol()).equals(MazeContents.OPEN) && !solved) {
             solved = solve(maze, row, col - 1);
