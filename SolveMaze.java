@@ -28,6 +28,7 @@ class SolveMaze {
 
     /**
      * Takes in a filename of a text file containing maze data to construct and display the maze using MazeViewer.
+     * If a filename is provided, that file is loaded, if not, the default demo maze is used
      * Then, it displays the maze and solves it.
      *
      * @param filename the name of the file
