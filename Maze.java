@@ -3,13 +3,10 @@ import java.util.*;
 
 /* This class should implement the DisplayableMaze interface */
 public class Maze implements DisplayableMaze{
-
     int height;
     int width;
     MazeContents[][] mazeGrid = new MazeContents[height][width];
-
     MazeLocation start;
-
     MazeLocation finish;
 
     /** The DemoMaze method will allow you to generate a simple maze
@@ -57,76 +54,102 @@ public class Maze implements DisplayableMaze{
         return this.finish;
     }
 
+  /**
+   * Sets the MazeContents value of a given location to PATH
+   * @param i the row value of a given location on the map
+   * @param j the column value of a given location on the map
+   */
     public void setPath(int i, int j){
-      mazeGrid[i][j] = MazeContents.PATH;
+        mazeGrid[i][j] = MazeContents.PATH;
     }
 
+    /**
+     * Sets the MazeContents value of a given location to VISITED
+     * @param i the row value of a given location on the map
+     * @param j the column value of a given location on the map
+     */
     public void setVisited(int i, int j){
-      mazeGrid[i][j] = MazeContents.VISITED;
+        mazeGrid[i][j] = MazeContents.VISITED;
     }
 
+    /**
+     * Sets the MazeContents value of a given location to DEAD_END
+     * @param i the row value of a given location on the map
+     * @param j the column value of a given location on the map
+     */
     public void setDeadEnd(int i, int j){
-      mazeGrid[i][j] = MazeContents.DEAD_END;
+        mazeGrid[i][j] = MazeContents.DEAD_END;
     }
 
-    public char[][] makeMaze(String filename) throws IOException{
-      int rows = 0;
-      int cols = 0;
-      try{
-        Scanner scan = new Scanner(new File(filename));
-        StringBuilder sb = new StringBuilder();
+    /**
+     * Converts a text file into a 2D array of chars
+     * @param filename the name of the text file that contains the raw maze data
+     * @return The array containing the maze data
+     * @throws FileNotFoundException if file does not exist
+     */
+    public char[][] makeMaze(String filename) throws FileNotFoundException{
+        int rows = 0;
+        int cols = 0;
+        try{
+            Scanner scan = new Scanner(new File(filename));
+            StringBuilder sb = new StringBuilder();
         while (scan.hasNext()) {
-          sb.append(scan.nextLine());
-          rows++;
+            sb.append(scan.nextLine());
+            rows++;
         }
         cols = sb.length()/rows;
         char[][] maze = new char[rows][cols];
         int i = 0;
 
         for(int row = 0; row < rows; row++){
-          for(int col = 0; col < cols; col++){
-            maze[row][col] = sb.charAt(i++);
-          }
+            for(int col = 0; col < cols; col++){
+                maze[row][col] = sb.charAt(i++);
+            }
         }
         return maze;
-      } catch (FileNotFoundException e) {
-        System.err.println("Cannot locate file.");
-        System.exit(-1);
-      }
-      return null;
+        } catch (FileNotFoundException e) {
+            System.err.println("Cannot locate file.");
+            System.exit(-1);
+            return null;
+        }
     }
 
+  /**
+   * Converts a 2D array of chars into a displayable maze
+   * @param maze: the @D array of chars
+   */
     public void setMazeGrid(char[][] maze){
-      String blocks = "#S.F";
-      char wall = blocks.charAt(0);
-      char st = blocks.charAt(1);
-      char space = blocks.charAt(2);
-      char fin = blocks.charAt(3);
+        String blocks = "#S.F";
+        char wall = blocks.charAt(0);
+        char st = blocks.charAt(1);
+        char space = blocks.charAt(2);
+        char fin = blocks.charAt(3);
 
-      this.height = maze.length;
-      this.width = maze[0].length;
-      this.mazeGrid = new MazeContents[height][width];
+        this.height = maze.length;
+        this.width = maze[0].length;
+        this.mazeGrid = new MazeContents[height][width];
 
-      for(int row = 0; row < maze.length; row++){
-        for(int col = 0; col < maze[0].length; col++){
-          if(maze[row][col] == wall){
-            this.mazeGrid[row][col] = MazeContents.WALL;
+        for(int row = 0; row < maze.length; row++){
+            for(int col = 0; col < maze[0].length; col++){
+                if(maze[row][col] == wall){
+                this.mazeGrid[row][col] = MazeContents.WALL;
 
-          } else if (maze[row][col] == st){
-            this.mazeGrid[row][col] = MazeContents.OPEN;
-            this.start = new MazeLocation(row, col);
+            } else if (maze[row][col] == st){
+                this.mazeGrid[row][col] = MazeContents.OPEN;
+                this.start = new MazeLocation(row, col);
 
-          } else if (maze[row][col] == space){
-            this.mazeGrid[row][col] = MazeContents.OPEN;
+            } else if (maze[row][col] == space){
+                this.mazeGrid[row][col] = MazeContents.OPEN;
 
-          } else if (maze[row][col] == fin){
-            this.mazeGrid[row][col] = MazeContents.OPEN;
-            this.finish = new MazeLocation(row, col);
+            } else if (maze[row][col] == fin){
+                this.mazeGrid[row][col] = MazeContents.OPEN;
+                this.finish = new MazeLocation(row, col);
 
-          }
-
+            }
         }
       }
+
+
     }
 
 }

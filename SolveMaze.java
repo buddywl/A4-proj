@@ -2,147 +2,133 @@ import java.io.*;
 import java.util.*;
 
 class SolveMaze {
-  public static ArrayList<MazeLocation> visited = new ArrayList<>();
-  public static void main(String[] args) throws IOException {
-    SolveMaze SolvedMaze = new SolveMaze();
+    public static ArrayList<MazeLocation> visited = new ArrayList<>();
 
-    Scanner input = new Scanner(System.in);
-    System.out.print("INPUT FILE NAME: ");
-    String filename = input.nextLine();
+    /**
+     *
+     * @param args command line arguments (ignored)
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public static void main(String[] args) throws FileNotFoundException {
+        SolveMaze SolvedMaze = new SolveMaze();
 
-    File filepath = new File((args.length > 0) ? args[0] : filename);
-    String maze = filepath.getAbsolutePath();
+        Scanner input = new Scanner(System.in);
+        System.out.print("INPUT FILE NAME: ");
+        String filename = input.nextLine();
 
-    SolvedMaze.maze(maze);
-    SolvedMaze.maze();
-  }
-  public void maze(String filename) throws IOException {
-    SolveMaze SolvedMaze = new SolveMaze();
+        File filepath = new File((args.length > 0) ? args[0] : filename);
+        String maze = filepath.getAbsolutePath();
 
-    reset(visited);
-    Maze maze = new Maze();
-
-    char[][] mazeArray = maze.makeMaze(filename);
-    maze.setMazeGrid(mazeArray);
-
-    MazeViewer viewer = new MazeViewer(maze);
-
-    MazeLocation startLocation = new MazeLocation(maze.getStart());
-    int sRow = startLocation.getRow();
-    int sCol = startLocation.getCol();
-
-    if(SolvedMaze.solve(maze, sRow, sCol)){
-      System.out.println("The maze was solved!");
-    } else {
-      System.out.println("No solution was found.");
-    }
-  }
-
-  public void maze(){
-    SolveMaze SolvedMaze = new SolveMaze();
-
-    reset(visited);
-    Maze maze = new Maze();
-    maze.initDemoMaze();
-
-    MazeViewer viewer = new MazeViewer(maze);
-
-    MazeLocation start = new MazeLocation(maze.getStart());
-    int sRow = start.getRow();
-    int sCol = start.getCol();
-
-    if(SolvedMaze.solve(maze, sRow, sCol)){
-      System.out.println("The maze was solved!");
-    } else {
-      System.out.println("No solution was found.");
-    }
-  }
-
-  public boolean solve(Maze maze, int row, int col) {
-
-    MazeLocation current = new MazeLocation(row, col);
-
-    MazeLocation north = current.neighbor(MazeDirection.NORTH);
-    MazeLocation south = current.neighbor(MazeDirection.SOUTH);
-    MazeLocation east = current.neighbor(MazeDirection.EAST);
-    MazeLocation west = current.neighbor(MazeDirection.WEST);
-
-    if (north.equals(maze.getFinish()) || south.equals(maze.getFinish()) || east.equals(maze.getFinish()) || west.equals(maze.getFinish())) {
-      maze.setPath(maze.getStart().getRow(), maze.getStart().getCol());
-      for(MazeLocation element : visited){
-        maze.setPath(element.getRow(), element.getCol());
-      }
-      maze.setPath(current.getRow(), current.getCol());
-      maze.setPath(maze.getFinish().getRow(), maze.getFinish().getCol());
-      return true;
+        SolvedMaze.maze(maze);
+        SolvedMaze.maze();
     }
 
-    boolean solved = false;
-    if (!current.equals(maze.getStart())) {
-      maze.setVisited(current.getRow(), current.getCol());
-      visited.add(current);
-      try {
-        Thread.sleep(10);
-      } catch (InterruptedException ignored) {
-      }
-    }
-//    else {
-//      maze.setVisited(row, col);
-//      try {
-//        Thread.sleep(10);
-//      } catch (InterruptedException ignored) {
-//      }
-//    }
+    /**
+     * Takes in a filename of a text file containing maze data to construct and display the maze using MazeViewer.
+     * Then, it displays the maze and solves it.
+     *
+     * @param filename the name of the file
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public void maze(String filename) throws FileNotFoundException {
+        SolveMaze SolvedMaze = new SolveMaze();
 
-    if (maze.getContents(north.getRow(), north.getCol()).equals(MazeContents.OPEN) && !solved) {
-      solved = solve(maze, row - 1, col);
-    }
-    if (maze.getContents(south.getRow(), south.getCol()).equals(MazeContents.OPEN) && !solved) {
-      solved = solve(maze, row + 1, col);
-    }
-    if (maze.getContents(east.getRow(), east.getCol()).equals(MazeContents.OPEN) && !solved) {
-      solved = solve(maze, row, col + 1);
-    }
-    if (maze.getContents(west.getRow(), west.getCol()).equals(MazeContents.OPEN) && !solved) {
-      solved = solve(maze, row, col - 1);
-    }
-    if(!solved){
-      visited.remove(current);
-      maze.setDeadEnd(current.getRow(), current.getCol());
+        visited.clear();
+        Maze maze = new Maze();
+
+        char[][] mazeArray = maze.makeMaze(filename);
+        maze.setMazeGrid(mazeArray);
+
+        MazeViewer viewer = new MazeViewer(maze);
+
+        MazeLocation startLocation = new MazeLocation(maze.getStart());
+        int sRow = startLocation.getRow();
+        int sCol = startLocation.getCol();
+
+        if(SolvedMaze.solve(maze, sRow, sCol)){
+            System.out.println("The maze was solved!");
+        } else {
+            System.out.println("No solution was found.");
+        }
     }
 
-    return solved;
-  }
+    /**
+     * Uses the initDemoMaze() method to initialize a demo maze, then solves it.
+     */
+    public void maze(){
+        SolveMaze SolvedMaze = new SolveMaze();
 
-  public <T> void reset(ArrayList<T> A){
-    A.clear();
-  }
+        visited.clear();
+        Maze maze = new Maze();
+        maze.initDemoMaze();
 
-//  public void setCurrent(MazeLocation loc, int row, int col) {
-//    loc.setRow(row);
-//    loc.setCol(col);
-//  }
-//
-//  public void mazeAlgo(Maze maze, int row, int col, MazeLocation current, MazeLocation ahead) {
-////    MazeLocation rNorth = current.reverse(MazeDirection.NORTH);
-////    MazeLocation rSouth = current.reverse(MazeDirection.SOUTH);
-////    MazeLocation rEast = current.reverse(MazeDirection.EAST);
-////    MazeLocation rWest = current.reverse(MazeDirection.WEST);
-////
-//
-//    maze.setVisited(row, col);
-//    setCurrent(current, row, col);
-////    if(maze.getContents(current.getRow(), current.getCol()) == MazeContents.VISITED || maze.getContents(current.getRow(), current.getCol()) == MazeContents.WALL){
-////      System.out.println("failure");
-////    } else if (current == maze.getFinish()){
-////      System.out.println("success");
-////    }
-//    visited.add(current);
-//    try {
-//      Thread.sleep(100);
-//    } catch (InterruptedException ignored) {
-//    }
-//    ;
-//  }
+        MazeViewer viewer = new MazeViewer(maze);
+
+        MazeLocation start = new MazeLocation(maze.getStart());
+        int sRow = start.getRow();
+        int sCol = start.getCol();
+
+        if(SolvedMaze.solve(maze, sRow, sCol)){
+            System.out.println("The maze was solved!");
+        } else {
+            System.out.println("No solution was found.");
+        }
+    }
+
+    /**
+     * Intakes a maze and the current location (row, col) and recursively solves the maze by
+     * visiting open squares and determining whether or not that path is a dead end or not. If its
+     * a dead end, that path is marked in red, and if the finish is found, the solution path is
+     * highlighted in a darker green.
+     *
+     * @param maze (Maze) the maze to be solved
+     * @param row (int) the row value of the current location
+     * @param col (int) the column value of the current location
+     * @return (boolean) whether or not the maze was solved
+     */
+    public boolean solve(Maze maze, int row, int col) {
+        MazeLocation current = new MazeLocation(row, col);
+
+        MazeLocation north = current.neighbor(MazeDirection.NORTH);
+        MazeLocation south = current.neighbor(MazeDirection.SOUTH);
+        MazeLocation east = current.neighbor(MazeDirection.EAST);
+        MazeLocation west = current.neighbor(MazeDirection.WEST);
+
+        if (north.equals(maze.getFinish()) || south.equals(maze.getFinish()) || east.equals(maze.getFinish()) || west.equals(maze.getFinish())) {
+            maze.setPath(maze.getStart().getRow(), maze.getStart().getCol());
+            for(MazeLocation element : visited){
+                maze.setPath(element.getRow(), element.getCol());
+            }
+            maze.setPath(current.getRow(), current.getCol());
+            maze.setPath(maze.getFinish().getRow(), maze.getFinish().getCol());
+            return true;
+        }
+
+        boolean solved = false;
+        if (!current.equals(maze.getStart())) {
+            maze.setVisited(current.getRow(), current.getCol());
+            visited.add(current);
+            try { Thread.sleep(10);} catch (InterruptedException ignored) {};
+        }
+
+        if (maze.getContents(north.getRow(), north.getCol()).equals(MazeContents.OPEN) && !solved) {
+            solved = solve(maze, row - 1, col);
+        }
+        if (maze.getContents(south.getRow(), south.getCol()).equals(MazeContents.OPEN) && !solved) {
+            solved = solve(maze, row + 1, col);
+        }
+        if (maze.getContents(east.getRow(), east.getCol()).equals(MazeContents.OPEN) && !solved) {
+            solved = solve(maze, row, col + 1);
+        }
+        if (maze.getContents(west.getRow(), west.getCol()).equals(MazeContents.OPEN) && !solved) {
+            solved = solve(maze, row, col - 1);
+        }
+        if(!solved){
+            visited.remove(current);
+            maze.setDeadEnd(current.getRow(), current.getCol());
+        }
+        return solved;
+    }
+
 }
 
