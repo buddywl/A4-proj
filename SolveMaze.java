@@ -19,8 +19,7 @@ class SolveMaze {
         String maze = "";
         
         if(args.length > 0){
-            String filename = args[0];
-            theFile = new File((args.length > 0) ? args[0] : filename);
+            theFile = new File(args[0]);
             maze = theFile.getAbsolutePath();
         } else {
             String filename = input.nextLine();
@@ -75,14 +74,14 @@ class SolveMaze {
 
     /**
      * Intakes a maze and the current location (row, col) and recursively solves the maze by
-     * visiting open squares and determining whether or not that path is a dead end or not. If its
+     * visiting open squares and determining whether that path is a dead end or not. If it's
      * a dead end, that path is marked in red, and if the finish is found, the solution path is
      * highlighted in a darker green.
      *
      * @param maze (Maze) the maze to be solved
      * @param row (int) the row value of the current location
      * @param col (int) the column value of the current location
-     * @return (boolean) whether or not the maze was solved
+     * @return (boolean) whether the maze was solved
      */
     public static boolean solveMaze(Maze maze, int row, int col) {
         MazeLocation current = new MazeLocation(row, col);
@@ -110,7 +109,7 @@ class SolveMaze {
         if (!current.equals(maze.getStart())) {
             maze.setVisited(current.getRow(), current.getCol());
             visited.add(current);
-            try { Thread.sleep(10);} catch (InterruptedException ignored) {};
+            try { Thread.sleep(75);} catch (InterruptedException ignored) {};
         }
 
         if (maze.getContents(north.getRow(), north.getCol()).equals(MazeContents.OPEN) && !isSolved) {
